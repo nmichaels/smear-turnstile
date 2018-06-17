@@ -1,0 +1,36 @@
+// Copyright 2017 Bose Corporation.
+// This software is released under the 3-Clause BSD License.
+// The license can be viewed at https://github.com/Bose/Smudge/blob/master/LICENSE
+
+turnstile
+{
+   *power-on -(@lightLEDs)-> locked,
+
+    locked (@lockedEnter)
+    [
+        coin -(@flashLEDs, coinInspector.validate)-> waiting-to-unlock,
+        person -(@soundAlarm)-
+    ] (@lockedExit),
+
+    waiting-to-unlock
+    [
+        person -(@soundAlarm)-,
+        coin-valid --> unlocked,
+        coin-invalid --> locked
+    ],
+
+    unlocked (@unlockedEnter)
+    [
+        person -(@soundOkay)-> locked
+    ]
+}
+
+coinInspector
+{
+   *ready
+    [
+        validate -(@validateCoin)-,
+        valid -(turnstile.coin-valid)->ready,
+        invalid -(turnstile.coin-invalid)->ready
+    ]
+}
