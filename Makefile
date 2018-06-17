@@ -20,4 +20,4 @@ turnstile: turnstile.o main.o turnstile_ext.o
 .PHONY: all clean
 
 clean:
-	rm -f *.o turnstile_ext.h turnstile.c turnstile.h turnstile
+	rm -f *.o turnstile_ext.h turnstile.c turnstile.h turnstile *.png
